@@ -1,0 +1,319 @@
+{
+    "log": {},
+    "dns": {
+        "strategy": "ipv4_only",
+        "servers": [
+            {
+                "tag": "remote",
+                "address": "https://1.1.1.1/dns-query",
+                "detour": "🚀 节点选择"
+            },
+            {
+                "tag": "local",
+                "address": "https://223.5.5.5/dns-query",
+                "detour": "direct"
+            },
+            {
+                "address": "rcode://success",
+                "tag": "block"
+            }
+        ],
+        "rules": [
+            {
+                "outbound": [
+                    "any"
+                ],
+                "server": "local"
+            },
+            {
+                "disable_cache": true,
+                "geosite": [
+                    "category-ads-all"
+                ],
+                "server": "block"
+            },
+            {
+                "clash_mode": "global",
+                "server": "remote"
+            },
+            {
+                "clash_mode": "direct",
+                "server": "local"
+            },
+            {
+                "server": "remote",
+                "geosite": "cn@!cn"
+            },
+            {
+                "geosite": "geolocation-!cn@cn",
+                "server": "local"
+            },
+            {
+                "geosite": "cn",
+                "server": "local"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "type": "tun",
+            "inet4_address": "172.19.0.1/30",
+            "inet6_address": "2001:0470:f9da:fdfa::1/64",
+            "sniff": true,
+            "strict_route": true,
+            "mtu": 9000,
+            "endpoint_independent_nat": true,
+            "auto_route": true
+        },
+        {
+            "type": "socks",
+            "tag": "socks-in",
+            "listen": "127.0.0.1",
+            "sniff": true,
+            "domain_strategy": "ipv4_only",
+            "listen_port": 2333,
+            "users": []
+        },
+        {
+            "type": "mixed",
+            "tag": "mixed-in",
+            "sniff": true,
+            "domain_strategy": "ipv4_only",
+            "listen": "127.0.0.1",
+            "listen_port": 2334,
+            "users": []
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct",
+            "tag": "direct"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        },
+        {
+            "type": "dns",
+            "tag": "dns-out"
+        },
+        {
+            "type": "selector",
+            "tag": "🎯 全球直连",
+            "outbounds": [
+                "🚀 节点选择",
+                "♻️ 自动选择",
+                "direct"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🚀 节点选择",
+            "outbounds": [
+                "♻️ 自动选择",
+                "🚀 手动切换",
+                "⚡ 香港专线Auto",
+                "⚡ 香港专线",
+                "🇭🇰 香港节点",
+                "⚡ 日本专线Auto",
+                "⚡ 日本专线",
+                "🇯🇵 日本节点",
+                "⚡ 美国专线Auto",
+                "⚡ 美国专线",
+                "🇺🇲 美国节点",
+                "⚡ 台湾专线Auto",
+                "⚡ 台湾专线",
+                "🇨🇳 台湾节点",
+                "⚡ 狮城专线Auto",
+                "⚡ 狮城专线",
+                "🇸🇬 狮城节点",
+                "🇰🇷 韩国节点",
+                "🎥 奈飞节点",
+                "include: .*"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🚀 手动切换",
+            "outbounds": [
+                "include: .*"
+            ]
+        },
+        {
+            "type": "urltest",
+            "tag": "♻️ 自动选择",
+            "outbounds": [
+                "include: .*"
+            ]
+        },
+        {
+            "type": "urltest",
+            "tag": "⚡ 香港专线Auto",
+            "outbounds": [
+                "include: (IPLC.*港)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "⚡ 香港专线",
+            "outbounds": [
+                "include: (IPLC.*港)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🇭🇰 香港节点",
+            "outbounds": [
+                "include: (香港|HK|Hong Kong)"
+            ]
+        },
+        {
+            "type": "urltest",
+            "tag": "⚡ 日本专线Auto",
+            "outbounds": [
+                "include: (IPLC.*日)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "⚡ 日本专线",
+            "outbounds": [
+                "include: (IPLC.*日)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🇯🇵 日本节点",
+            "outbounds": [
+                "include: (日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan)"
+            ]
+        },
+        {
+            "type": "urltest",
+            "tag": "⚡ 美国专线Auto",
+            "outbounds": [
+                "include: (IPLC.*美)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "⚡ 美国专线",
+            "outbounds": [
+                "include: (IPLC.*美)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🇺🇲 美国节点",
+            "outbounds": [
+                "include: (美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)"
+            ]
+        },
+        {
+            "type": "urltest",
+            "tag": "⚡ 台湾专线Auto",
+            "outbounds": [
+                "include: (IPLC.*台)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "⚡ 台湾专线",
+            "outbounds": [
+                "include: (IPLC.*台)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🇨🇳 台湾节点",
+            "outbounds": [
+                "include: (台湾|新北|彰化|TW|Taiwan)"
+            ]
+        },
+        {
+            "type": "urltest",
+            "tag": "⚡ 狮城专线Auto",
+            "outbounds": [
+                "include: (IPLC.*新)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "⚡ 狮城专线",
+            "outbounds": [
+                "include: (IPLC.*新)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🇸🇬 狮城节点",
+            "outbounds": [
+                "include: (新加坡|坡|狮城|SG|Singapore)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🇰🇷 韩国节点",
+            "outbounds": [
+                "include: (KR|Korea|KOR|首尔|韩|韓)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🎥 奈飞节点",
+            "outbounds": [
+                "include: (NF|奈飞|解锁|Netflix|NETFLIX|Media)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "🌐 其他节点",
+            "outbounds": [
+                "include: (印度|印尼|俄罗斯|沙特|马来西亚|阿根廷|土耳其|菲律宾|巴基斯坦|巴西|澳门|英国|加拿大|德国|澳大利亚|新西兰|泰国|荷兰)"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "📶 免流节点",
+            "outbounds": [
+                "include: (免流)"
+            ]
+        }
+    ],
+    "route": {
+        "final": "🚀 节点选择",
+        "rules": [
+            {
+                "geosite": "category-ads-all",
+                "outbound": "block"
+            },
+            {
+                "protocol": "dns",
+                "outbound": "dns-out"
+            },
+            {
+                "clash_mode": "direct",
+                "outbound": "direct"
+            },
+            {
+                "clash_mode": "global",
+                "outbound": "🚀 节点选择"
+            },
+            {
+                "geoip": [
+                    "cn",
+                    "private"
+                ],
+                "outbound": "direct"
+            }
+        ],
+        "auto_detect_interface": true
+    },
+    "experimental": {
+        "clash_api": {
+            "external_controller": "127.0.0.1:9090",
+            "store_selected": true,
+            "secret": ""
+        }
+    }
+}
