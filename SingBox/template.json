@@ -284,8 +284,16 @@
         "final": "🚀 节点选择",
         "rules": [
             {
-                "geosite": "category-ads-all",
+                "rule_set": "geosite-category-ads-all",
                 "outbound": "block"
+            },
+            {
+                "ip_is_private": true,
+                "outbound": "direct"
+            },
+            {
+                "rule_set": "geoip-cn",
+                "outbound": "direct"
             },
             {
                 "protocol": "dns",
@@ -298,21 +306,32 @@
             {
                 "clash_mode": "global",
                 "outbound": "🚀 节点选择"
+            }
+        ],
+        "rule_set": [
+            {
+                "tag": "geoip-cn",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+                "download_detour": "proxy"
             },
             {
-                "geoip": [
-                    "cn",
-                    "private"
-                ],
-                "outbound": "direct"
+                "tag": "geosite-category-ads-all",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
+                "download_detour": "proxy"
             }
         ],
         "auto_detect_interface": true
     },
     "experimental": {
+        "cache_file": {
+            "enabled": true
+        },
         "clash_api": {
             "external_controller": "127.0.0.1:9090",
-            "store_selected": true,
             "secret": ""
         }
     }
