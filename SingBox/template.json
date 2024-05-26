@@ -276,7 +276,8 @@
             "type": "selector",
             "tag": "📶 免流节点",
             "outbounds": [
-                "include: (免流)"
+                "include: (免流)",
+                "direct"
             ]
         }
     ],
